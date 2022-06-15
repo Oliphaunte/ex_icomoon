@@ -1,11 +1,11 @@
-defmodule KuratorsWeb.Router do
-  use KuratorsWeb, :router
+defmodule KuratorsAdmin.Router do
+  use KuratorsAdmin, :router
 
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
-    plug :put_root_layout, {KuratorsWeb.LayoutView, :root}
+    plug :put_root_layout, {KuratorsAdmin.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
@@ -14,12 +14,20 @@ defmodule KuratorsWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", KuratorsWeb do
-    pipe_through :browser
+  scope "/", KuratorsAdmin do
+    pipe_through [:browser]
+
+    live "/", IndexLive, :index
   end
 
+  # scope "/", KuratorsWeb do
+  #   pipe_through :browser
+
+  #   live("/:route", CustomPageLive, :index)
+  # end
+
   # Other scopes may use custom stacks.
-  # scope "/api", KuratorsWeb do
+  # scope "/api", KuratorsAdmin do
   #   pipe_through :api
   # end
 
@@ -36,7 +44,7 @@ defmodule KuratorsWeb.Router do
     scope "/" do
       pipe_through :browser
 
-      live_dashboard "/dashboard", metrics: KuratorsWeb.Telemetry
+      live_dashboard "/dashboard", metrics: KuratorsAdmin.Telemetry
     end
   end
 

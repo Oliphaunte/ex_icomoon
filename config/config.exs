@@ -11,12 +11,15 @@ config :kurators,
   ecto_repos: [Kurators.Repo],
   generators: [binary_id: true]
 
-# Configures the endpoint
 config :kurators, KuratorsWeb.Endpoint,
-  url: [host: "localhost"],
   render_errors: [view: KuratorsWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: Kurators.PubSub,
-  live_view: [signing_salt: "46hK3MlK"]
+  live_view: [signing_salt: "2ayhgIAD"]
+
+config :kurators, KuratorsAdmin.Endpoint,
+  render_errors: [view: KuratorsAdmin.ErrorView, accepts: ~w(html json), layout: false],
+  pubsub_server: Kurators.PubSub,
+  live_view: [signing_salt: "mQNQkbiW"]
 
 # Configures the mailer
 #

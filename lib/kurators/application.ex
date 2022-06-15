@@ -15,6 +15,7 @@ defmodule Kurators.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Kurators.PubSub},
       # Start the Endpoint (http/https)
+      KuratorsAdmin.Endpoint,
       KuratorsWeb.Endpoint
       # Start a worker by calling: Kurators.Worker.start_link(arg)
       # {Kurators.Worker, arg}
