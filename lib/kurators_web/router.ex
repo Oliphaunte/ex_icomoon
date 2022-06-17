@@ -16,6 +16,8 @@ defmodule KuratorsWeb.Router do
 
   scope "/", KuratorsWeb do
     pipe_through :browser
+
+    live("/:route", CustomPageLive, :index)
   end
 
   # Other scopes may use custom stacks.

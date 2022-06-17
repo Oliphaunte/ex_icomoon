@@ -36,7 +36,8 @@ config :kurators, KuratorsWeb.Endpoint,
   secret_key_base: "PwoZ599kk+Ul+Q2abkJFzW0zI+wPWFxCueYlvAiwniXeq8X4Whb7yr/MHqe4zXU6",
   watchers: [
     # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
-    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
+    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
+    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
   ]
 
 config :kurators, KuratorsAdmin.Endpoint,
@@ -59,7 +60,8 @@ config :kurators, KuratorsAdmin.Endpoint,
   secret_key_base: "whnL8JiOu6e5YIbt0mqTHL51OxbBC6DmLAzIrO0RA0LN8AyrLs1MdVtVitIUB6pJ",
   watchers: [
     # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
-    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
+    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
+    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
   ]
 
 # Watch static and templates for browser reloading.
