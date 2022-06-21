@@ -1,0 +1,26 @@
+{
+  "repository": {},
+  "description": " ",
+  "license": "MIT",
+  "scripts": {
+    "update": "pnpm up --latest --interactive"
+  },
+  "engines": {
+    "node": "^18.0.0",
+    "npm": "^8.0.0"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "topbar": "^1.0.1"
+  },
+  "prettier": {
+    "endOfLine": "lf",
+    "jsxBracketSameLine": true,
+    "printWidth": 100,
+    "semi": false,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "es5",
+    "arrowParens": "avoid"
+  }
+}
