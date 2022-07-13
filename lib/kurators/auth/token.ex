@@ -1,6 +1,8 @@
 defmodule Kurators.Auth.Token do
   use Ecto.Schema
 
+  require Logger
+
   import Ecto.Changeset
   import Ecto.Query, warn: false
 
@@ -33,48 +35,19 @@ defmodule Kurators.Auth.Token do
     |> unique_constraint(:user_id)
   end
 
-  @doc """
-  Meant for email authentication
+  defp encrypt_refresh_token(refresh_token) when is_nil(refresh_token), do: nil
 
-  Generates a session token of random bytes
-
-  If the user already has a token, this will override that token with the new values
-  """
-  def generate_token(user) do
-    session_token = :crypto.strong_rand_bytes(@rand_size) |> :base64.encode()
-
-    attrs = %{
-      token: session_token,
-      context: "session",
-      user_id: user.id,
-      last_called_at: DateTime.truncate(DateTime.utc_now(), :second)
-    }
-
-    result =
-      %__MODULE__{}
-      |> __MODULE__.changeset(attrs)
-      |> Repo.insert_or_update!(prefix: "auth")
-
-    case result do
-      {:ok, %__MODULE__{token: token}} ->
-        {:ok, token}
-
-      {:error, _changeset} ->
-        nil
-    end
+  defp encrypt_refresh_token(refresh_token) do
+    Crypto.encrypt(:refresh_token, refresh_token)
   end
 
   @doc """
-  Handles third party authentication
-
   Generates a session token of random bytes
 
   Stores refresh token and context of the third party auth used
-
-  If the user already has a token, this will override that token with the new values
   """
-  def generate_token(user, refresh_token, context) do
-    refresh_token = Crypto.encrypt(:refresh_token, refresh_token)
+  def generate_token(user, refresh_token \\ nil, context \\ "session") do
+    refresh_token = encrypt_refresh_token(refresh_token)
     session_token = :crypto.strong_rand_bytes(@rand_size) |> :base64.encode()
 
     attrs = %{
@@ -88,14 +61,14 @@ defmodule Kurators.Auth.Token do
     result =
       %__MODULE__{}
       |> __MODULE__.changeset(attrs)
-      |> Repo.insert_or_update!(prefix: "auth")
+      |> Repo.insert_or_update(prefix: "auth")
 
     case result do
-      {:ok, %__MODULE__{token: token}} ->
+      {:ok, token} ->
         {:ok, token}
 
-      _ ->
-        nil
+      {:error, _changeset} ->
+        Logger.info("Failed to generate token of context type:application_starter #{context}")
     end
   end
 

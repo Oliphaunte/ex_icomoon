@@ -46,9 +46,9 @@ defmodule Kurators.Auth.Plugs.Callback do
 
         conn
         |> put_session(:access_token, access_token)
-        |> put_session(:session_token, session_token)
-        |> put_session(:live_socket_id, "users_socket:#{session_token}")
-        |> put_resp_cookie(@remember_me_cookie, session_token, @remember_me_options)
+        |> put_session(:session_token, session_token.token)
+        |> put_session(:live_socket_id, "users_socket:#{session_token.token}")
+        |> put_resp_cookie(@remember_me_cookie, session_token.token, @remember_me_options)
         |> redirect(to: "/")
         |> halt()
 
