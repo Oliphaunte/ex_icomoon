@@ -2,8 +2,10 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+@import './icons.css';
+
 /* Alerts and form errors used by phx.new */
-.alert {
+/* .alert {
   padding: 15px;
   margin-bottom: 20px;
   border: 1px solid transparent;
@@ -40,10 +42,10 @@
   color: #a94442;
   display: block;
   margin: -1rem 0 2rem;
-}
+} */
 
 /* LiveView specific classes for your customization */
-.phx-no-feedback.invalid-feedback,
+/* .phx-no-feedback.invalid-feedback,
 .phx-no-feedback .invalid-feedback {
   display: none;
 }
@@ -149,4 +151,4 @@
   100% {
     opacity: 0;
   }
-}
+} */

@@ -43,13 +43,17 @@ defmodule Kurators.MixProject do
       {:floki, ">= 0.30.0", only: :test},
       {:phoenix_live_dashboard, "~> 0.6"},
       {:esbuild, "~> 0.4", runtime: Mix.env() == :dev},
-      {:swoosh, "~> 1.3"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:tailwind, "~> 0.1.6", runtime: Mix.env() == :dev}
+      {:tailwind, "~> 0.1.6", runtime: Mix.env() == :dev},
+      {:assent, "~>0.2"},
+      {:bcrypt_elixir, "~> 3.0"},
+      {:swoosh, "~> 1.3"},
+      {:phoenix_swoosh, "~> 1.0"},
+      {:finch, "~> 0.12"}
     ]
   end
 

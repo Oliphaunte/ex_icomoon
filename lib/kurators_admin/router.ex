@@ -1,6 +1,9 @@
 defmodule KuratorsAdmin.Router do
   use KuratorsAdmin, :router
 
+  alias KuratorsAdmin.{OnMount, Nav}
+  alias Kurators.Auth.Plugs.{Role, Session, Callback}
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -10,14 +13,34 @@ defmodule KuratorsAdmin.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :callback do
+    plug(Callback)
+  end
+
+  pipeline :session do
+    plug(Session)
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
 
   scope "/", KuratorsAdmin do
-    pipe_through [:browser]
+    pipe_through [:browser, :callback]
 
-    live "/", IndexLive, :index
+    live("/auth/google", AuthLive, :index)
+  end
+
+  scope "/", KuratorsAdmin do
+    pipe_through [:browser, :session]
+
+    live("/auth", AuthLive, :index)
+
+    live_session :authenticated,
+      on_mount: [{OnMount, :check_authenticated}, Nav] do
+      live "/", IndexLive, :index
+      live("/settings/auth", WebAuthLive, :index)
+    end
   end
 
   # scope "/", KuratorsWeb do

@@ -1,0 +1,10 @@
+<div id="t__auth-page" class="flex w-full">
+  <h2>Select available authentication options for users</h2>
+  <ul class="flex justify-between">
+    <%= for auth <- ["google", "twitter", "github"] do %>
+      <li class="px-2 w-full">
+        <.icon name={auth} />
+      </li>
+    <% end %>
+  </ul>
+</div>

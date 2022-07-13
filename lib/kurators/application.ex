@@ -16,9 +16,10 @@ defmodule Kurators.Application do
       {Phoenix.PubSub, name: Kurators.PubSub},
       # Start the Endpoint (http/https)
       KuratorsAdmin.Endpoint,
-      KuratorsWeb.Endpoint
-      # Start a worker by calling: Kurators.Worker.start_link(arg)
-      # {Kurators.Worker, arg}
+      KuratorsWeb.Endpoint,
+      {Finch, name: Swoosh.Finch},
+      # Start the auth supervisor
+      Kurators.Auth.Supervisor
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

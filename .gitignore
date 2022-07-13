@@ -28,7 +28,13 @@ kurators-*.tar
 # Ignore digested assets cache.
 /priv/static/cache_manifest.json
 
+# Ignore Elixir files that contain sensitive environment-specific data.
+**/*.secret.exs
+
 # In case you use Node.js/npm, you want to ignore these.
 npm-debug.log
+.pnpm-debug.log
 /assets/node_modules/
 
+# Really should be in your ~/.gitignore (global git ignore), but in case it isn't.
+.DS_Store
