@@ -38,7 +38,9 @@ defmodule KuratorsAdmin.Router do
 
     live_session :authenticated,
       on_mount: [{OnMount, :check_authenticated}, Nav] do
-      live "/", IndexLive, :index
+      live("/", IndexLive, :index)
+      live("/users", UsersLive, :index)
+      live("/user/:id", UserLive, :index)
       live("/settings/auth", WebAuthLive, :index)
     end
   end

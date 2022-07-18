@@ -46,7 +46,7 @@ defmodule Kurators.Auth.TokenHandler do
 
     :ets.insert(
       :token_table,
-      {:"#{session_uuid}", %{session_token: session_token, remember_me: remember_me}}
+      {:"#{session_uuid}", %{session_token: session_token.token, remember_me: remember_me}}
     )
 
     {:reply, :ok, state}

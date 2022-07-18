@@ -16,6 +16,16 @@ defmodule Kurators.Auth do
     Accounts |> first(:inserted_at) |> Repo.one()
   end
 
+  defp notify_user(user) do
+    with {:ok, sign_in_code} <- SignInCode.create_sign_in_code(user),
+         :ok <- SignInCode.notify_user_of_sign_in_code(user, sign_in_code) do
+      {:ok, sign_in_code}
+    else
+      {:error, _changeset} ->
+        {:error, :not_valid}
+    end
+  end
+
   @doc """
   Creates a sign_in_code and notifies the user
 
@@ -46,16 +56,6 @@ defmodule Kurators.Auth do
 
       {:error, :no_such_user} ->
         Users.create_user(%{email: email, accounts_id: get_primary_account().id})
-    end
-  end
-
-  defp notify_user(user) do
-    with {:ok, sign_in_code} <- SignInCode.create_sign_in_code(user),
-         :ok <- SignInCode.notify_user_of_sign_in_code(user, sign_in_code) do
-      {:ok, sign_in_code}
-    else
-      {:error, _changeset} ->
-        {:error, :not_valid}
     end
   end
 
@@ -91,8 +91,13 @@ defmodule Kurators.Auth do
     config[:strategy].callback(config, params)
   end
 
+  @doc """
+  Refreshes the access token when a user enters the page and has an active access_token
+  """
+  def refresh_access_token(provider, refresh_token, params \\ [])
+
   @spec refresh_access_token(String.t(), map(), Keyword.t()) :: {:ok, map()} | {:error, term()}
-  def refresh_access_token(provider, refresh_token, params \\ []) when is_binary(provider) do
+  def refresh_access_token(provider, refresh_token, params) when is_binary(provider) do
     provider = String.to_existing_atom(provider)
 
     refresh_access_token(provider, refresh_token, params)
@@ -106,9 +111,14 @@ defmodule Kurators.Auth do
     OAuth2.refresh_access_token(config, refresh_token, params)
   end
 
+  @doc """
+  Fetch the user from the third-party auth
+  """
+  def fetch_user(provider, token, params \\ [], headers \\ [])
+
   @spec fetch_user(String.t(), map(), map() | Keyword.t(), [{binary(), binary()}]) ::
           {:ok, map()} | {:error, term()}
-  def fetch_user(provider, token, params \\ [], headers \\ []) when is_binary(provider) do
+  def fetch_user(provider, token, params, headers) when is_binary(provider) do
     provider = String.to_existing_atom(provider)
 
     fetch_user(provider, token, params, headers)

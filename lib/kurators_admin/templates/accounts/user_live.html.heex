@@ -1,0 +1,29 @@
+<div id="t__user_page" class="flex w-full bg-ivory">
+  <%= form_for :no_changeset, "#", [phx_submit: :submit_email], fn f -> %>
+    <div>
+      <%= text_input(f, :email, value: @user.id, disabled: true) %>
+    </div>
+
+    <div>
+      <%= text_input(f, :first_name, value: @user.first_name, placeholder: "First Name") %>
+    </div>
+
+    <div>
+      <%= text_input(f, :last_name, value: @user.last_name, placeholder: "Last Name") %>
+    </div>
+
+    <div>
+      <%= email_input(f, :email, value: @user.email, disabled: true) %>
+    </div>
+
+    <div>
+      <%= select(f, :role, [Admin: "admin", User: "user"], selected: [@user.role]) %>
+    </div>
+
+    <div>
+      <%= select(f, :role, [Active: "active"], selected: [@user.status]) %>
+    </div>
+
+    <div></div>
+  <% end %>
+</div>

@@ -25,7 +25,7 @@ defmodule Kurators.Auth.Plugs.Role do
   def init(config), do: config
 
   @doc false
-  @spec call(Conn.t(), atom() | [atom()]) :: Conn.t()
+  @spec call(Plug.Conn.t(), any) :: Plug.Conn.t()
   def call(conn, roles) do
     case get_session(conn, :session_token) do
       nil ->

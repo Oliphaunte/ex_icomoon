@@ -53,7 +53,8 @@ defmodule Kurators.MixProject do
       {:bcrypt_elixir, "~> 3.0"},
       {:swoosh, "~> 1.3"},
       {:phoenix_swoosh, "~> 1.0"},
-      {:finch, "~> 0.12"}
+      {:finch, "~> 0.12"},
+      {:cloudex, "~> 1.4"}
     ]
   end
 
