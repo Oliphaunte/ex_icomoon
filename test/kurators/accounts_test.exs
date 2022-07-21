@@ -2,7 +2,7 @@ defmodule Kurators.AccountsTest do
   use Kurators.DataCase
 
   alias Kurators.Accounts
-  alias Kurators.Accounts.Users
+  alias Kurators.Accounts.User
 
   @valid_attrs %{name: "my account"}
 
@@ -21,7 +21,7 @@ defmodule Kurators.AccountsTest do
     {:ok, user} =
       attrs
       |> Enum.into(@valid_attrs)
-      |> Users.create_user()
+      |> User.create()
 
     user
   end
@@ -31,9 +31,9 @@ defmodule Kurators.AccountsTest do
     assert Accounts.list_accounts() == [account]
   end
 
-  test "list_users/0 returns all users" do
+  test "fetch_all/0 returns all users" do
     account = account_fixture()
     user = user_fixture(%{accounts_id: account.id})
-    assert Users.list_users() == [user]
+    assert User.fetch_all() == [user]
   end
 end

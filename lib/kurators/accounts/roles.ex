@@ -1,19 +1,42 @@
-defmodule Kurators.Accounts.Roles do
+defmodule Kurators.Accounts.Role do
   use Ecto.Schema
 
   import Ecto.Changeset
 
-  alias Kurators.Auth.Status
+  alias Kurators.Repo
+  alias Kurators.Accounts.User
 
+  @primary_key {:id, :binary_id, autogenerate: true}
   @schema_prefix "accounts"
+  @foreign_key_type :binary_id
 
-  embedded_schema do
+  schema "roles" do
     field(:name, :string)
-    embeds_one(:status, Status)
+    field(:default, :boolean)
+    has_many(:user, User)
+
+    timestamps()
   end
 
-  def changeset(attrs \\ %{}) do
+  def changeset(role, attrs \\ %{}) do
+    role
+    |> cast(attrs, [:name, :default])
+    |> validate_required([:name])
+    |> validate_length(:name, max: 160)
+    |> unsafe_validate_unique(:name, Kurators.Repo)
+    |> unique_constraint(:name)
+  end
+
+  def create(attrs \\ %{}) do
     %__MODULE__{}
-    |> cast(attrs, [:status])
+    |> __MODULE__.changeset(attrs)
+    |> Repo.insert(prefix: "accounts")
+  end
+
+  def get_by_name(name) do
+    case Repo.get_by(__MODULE__, [name: name], prefix: "accounts") do
+      %__MODULE__{} = role -> {:ok, role}
+      nil -> {:error, :no_such_role}
+    end
   end
 end

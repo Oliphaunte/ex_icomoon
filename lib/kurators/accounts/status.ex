@@ -3,14 +3,40 @@ defmodule Kurators.Accounts.Status do
 
   import Ecto.Changeset
 
-  @schema_prefix "accounts"
+  alias Kurators.Repo
+  alias Kurators.Accounts.User
 
-  embedded_schema do
+  @primary_key {:id, :binary_id, autogenerate: true}
+  @schema_prefix "accounts"
+  @foreign_key_type :binary_id
+
+  schema "statuses" do
     field(:name, :string)
+    field(:default, :boolean)
+    has_many(:user, User)
+
+    timestamps()
   end
 
-  def changeset(attrs \\ %{}) do
+  def changeset(role, attrs \\ %{}) do
+    role
+    |> cast(attrs, [:name, :default])
+    |> validate_required([:name])
+    |> validate_length(:name, max: 160)
+    |> unsafe_validate_unique(:name, Kurators.Repo)
+    |> unique_constraint(:name)
+  end
+
+  def create(attrs \\ %{}) do
     %__MODULE__{}
-    |> cast(attrs, [:status])
+    |> __MODULE__.changeset(attrs)
+    |> Repo.insert(prefix: "accounts")
+  end
+
+  def get_by_name(name) do
+    case Repo.get_by(__MODULE__, [name: name], prefix: "accounts") do
+      %__MODULE__{} = status -> {:ok, status}
+      nil -> {:error, :no_such_status}
+    end
   end
 end

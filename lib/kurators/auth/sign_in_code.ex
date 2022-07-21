@@ -5,7 +5,7 @@ defmodule Kurators.Auth.SignInCode do
   import Ecto.Query, warn: false
 
   alias Kurators.{Repo, Mailer}
-  alias Kurators.Accounts.Users
+  alias Kurators.Accounts.User
 
   @sign_in_code_length 6
   @sign_in_code_regex Regex.compile!("^\\d{" <> Integer.to_string(@sign_in_code_length) <> "}$")
@@ -17,10 +17,10 @@ defmodule Kurators.Auth.SignInCode do
   @foreign_key_type :binary_id
 
   schema "sign_in_codes" do
-    belongs_to(:user, Users)
     field(:code, :string, virtual: true)
     field(:hashed_code, :string)
     field(:sign_in_attempts, :integer, default: 0)
+    belongs_to(:user, User)
 
     timestamps(updated_at: false)
   end
@@ -54,7 +54,7 @@ defmodule Kurators.Auth.SignInCode do
   @doc """
 
   """
-  def create_sign_in_code(%Users{id: user_id}) do
+  def create_sign_in_code(%User{id: user_id}) do
     %__MODULE__{}
     |> __MODULE__.create_changeset(%{user_id: user_id})
     |> Repo.insert(prefix: "auth")

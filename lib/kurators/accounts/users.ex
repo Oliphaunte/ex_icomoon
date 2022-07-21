@@ -1,10 +1,11 @@
-defmodule Kurators.Accounts.Users do
+defmodule Kurators.Accounts.User do
   use Ecto.Schema
 
   import Ecto.Changeset
 
   alias Kurators.Repo
-  alias Kurators.Auth.{Roles, Status, Token, SignInCode}
+  alias Kurators.Accounts.{Role, Status}
+  alias Kurators.Auth.{Token, SignInCode}
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @schema_prefix "accounts"
@@ -21,8 +22,8 @@ defmodule Kurators.Accounts.Users do
     field(:confirmed_at, :utc_datetime)
     has_one(:tokens, Token)
     has_one(:sign_in_codes, SignInCode)
-    embeds_one(:status, Status)
-    embeds_one(:role, Roles)
+    belongs_to(:statuses, Status, foreign_key: :statuses_id, type: :binary_id)
+    belongs_to(:roles, Role, foreign_key: :roles_id, type: :binary_id)
     belongs_to(:accounts, Accounts, foreign_key: :accounts_id, type: :binary_id)
 
     timestamps()
@@ -39,6 +40,8 @@ defmodule Kurators.Accounts.Users do
       :last_name,
       :profile_picture,
       :confirmed_at,
+      :statuses_id,
+      :roles_id,
       :accounts_id
     ])
     |> unique_constraint(:accounts_id)
@@ -93,8 +96,11 @@ defmodule Kurators.Accounts.Users do
   @doc """
   Returns the list of users
   """
-  def list_users do
-    Repo.all(__MODULE__, prefix: "accounts")
+  def fetch_all do
+    __MODULE__
+    |> Repo.all(prefix: "accounts")
+    |> Repo.preload(:roles, prefix: "accounts")
+    |> Repo.preload(:statuses, prefix: "accounts")
   end
 
   @doc """
@@ -120,7 +126,7 @@ defmodule Kurators.Accounts.Users do
   @doc """
   Creates a user
   """
-  def create_user(attrs \\ %{}) do
+  def create(attrs \\ %{}) do
     %__MODULE__{}
     |> __MODULE__.changeset(attrs)
     |> Repo.insert(prefix: "accounts")

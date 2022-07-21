@@ -10,7 +10,7 @@ defmodule Kurators.Auth do
   alias Assent.Strategy.OAuth2
   alias Kurators.Auth.{SignInCode}
   alias Kurators.Accounts
-  alias Kurators.Accounts.Users
+  alias Kurators.Accounts.User
 
   defp get_primary_account() do
     Accounts |> first(:inserted_at) |> Repo.one()
@@ -32,13 +32,13 @@ defmodule Kurators.Auth do
   When a user does not exist, it creates the user and then passes the sign_in_code
   """
   def authenticate(email) do
-    case Users.get_user_by_email(email) do
-      {:ok, %Users{} = user} ->
+    case User.get_user_by_email(email) do
+      {:ok, %User{} = user} ->
         notify_user(user)
 
       {:error, :no_such_user} ->
-        {:ok, %Users{} = user} =
-          Users.create_user(%{email: email, accounts_id: get_primary_account().id})
+        {:ok, %User{} = user} =
+          User.create(%{email: email, accounts_id: get_primary_account().id})
 
         notify_user(user)
     end
@@ -50,12 +50,12 @@ defmodule Kurators.Auth do
   Creates the user if authorized through 3rd party and account does not exist already
   """
   def authenticate(email, _context) do
-    case Users.get_user_by_email(email) do
-      {:ok, %Users{} = user} ->
+    case User.get_user_by_email(email) do
+      {:ok, %User{} = user} ->
         {:ok, user}
 
       {:error, :no_such_user} ->
-        Users.create_user(%{email: email, accounts_id: get_primary_account().id})
+        User.create(%{email: email, accounts_id: get_primary_account().id})
     end
   end
 

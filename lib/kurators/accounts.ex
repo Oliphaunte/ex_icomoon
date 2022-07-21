@@ -8,7 +8,7 @@ defmodule Kurators.Accounts do
   import Ecto.Changeset
 
   alias Kurators.Repo
-  alias Kurators.Accounts.Users
+  alias Kurators.Accounts.User
 
   @pubsub Kurators.PubSub
   @primary_key {:id, :binary_id, autogenerate: true}
@@ -17,13 +17,13 @@ defmodule Kurators.Accounts do
 
   schema "accounts" do
     field(:name, :string)
-    has_many(:users, Users)
+    has_many(:users, User)
 
     timestamps()
   end
 
-  def changeset(user, attrs \\ %{}) do
-    user
+  def changeset(account, attrs \\ %{}) do
+    account
     |> cast(attrs, [:name])
     |> validate_name()
   end
@@ -46,7 +46,7 @@ defmodule Kurators.Accounts do
   @doc """
   Creates an account
   """
-  def get_account_by_name(name) do
+  def get_by_name(name) do
     case Repo.get_by(__MODULE__, [name: name], prefix: "accounts") do
       %__MODULE__{} = account -> {:ok, account}
       nil -> {:error, :no_such_account}
@@ -88,7 +88,7 @@ defmodule Kurators.Accounts do
     Phoenix.PubSub.unsubscribe(@pubsub, topic(user_id))
   end
 
-  defp broadcast!(%Users{} = user, msg) do
+  defp broadcast!(%User{} = user, msg) do
     Phoenix.PubSub.broadcast!(@pubsub, topic(user.id), {__MODULE__, msg})
   end
 end

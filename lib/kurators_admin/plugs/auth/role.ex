@@ -18,7 +18,7 @@ defmodule Kurators.Auth.Plugs.Role do
   import Phoenix.Controller, only: [redirect: 2]
 
   alias Kurators.Auth.{TokenHandler}
-  alias Kurators.Accounts.Users
+  alias Kurators.Accounts.User
 
   @doc false
   @spec init(any()) :: any()
@@ -48,7 +48,7 @@ defmodule Kurators.Auth.Plugs.Role do
     end
   end
 
-  defp has_role?(%Users{role: role}, role), do: true
+  # defp has_role?(%User{role: role}, role), do: true
   defp has_role?(_user, _role), do: false
 
   defp maybe_halt(true, conn), do: conn

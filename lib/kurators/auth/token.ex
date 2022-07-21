@@ -7,7 +7,7 @@ defmodule Kurators.Auth.Token do
   import Ecto.Query, warn: false
 
   alias Kurators.{Crypto, Repo}
-  alias Kurators.Accounts.Users
+  alias Kurators.Accounts.User
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @schema_prefix "auth"
@@ -24,7 +24,7 @@ defmodule Kurators.Auth.Token do
     field(:refresh_token, :string)
     field(:last_called_at, :utc_datetime)
     field(:context, :string)
-    belongs_to(:user, Users, foreign_key: :user_id, type: :binary_id)
+    belongs_to(:user, User, foreign_key: :user_id, type: :binary_id)
 
     timestamps(updated_at: false)
   end
@@ -85,10 +85,10 @@ defmodule Kurators.Auth.Token do
       )
 
     case Repo.one(query, prefix: "auth") do
-      {_context, refresh_token, %Users{} = user} when is_nil(refresh_token) ->
+      {_context, refresh_token, %User{} = user} when is_nil(refresh_token) ->
         {:ok, %{user: user}}
 
-      {context, refresh_token, %Users{} = user} ->
+      {context, refresh_token, %User{} = user} ->
         decrypt_refresh_token(context, refresh_token, user)
 
       {:error, error} ->
