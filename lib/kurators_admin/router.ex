@@ -19,6 +19,7 @@ defmodule KuratorsAdmin.Router do
 
   pipeline :session do
     plug(Session)
+    # plug(Role)
   end
 
   pipeline :api do

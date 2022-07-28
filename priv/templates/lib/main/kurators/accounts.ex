@@ -1,17 +1,16 @@
-defmodule Kurators.Accounts do
+defmodule <%= main_module %>.Accounts do
   @moduledoc """
   Authentication piece that allows users to login via either their email/code or 3rd party
 
   TODO: 2-factor auth (yubikey?)
   """
   use Ecto.Schema
-
   import Ecto.Changeset
 
-  alias Kurators.Repo
-  alias Kurators.Accounts.User
+  alias <%= main_module %>.Repo
+  alias <%= main_module %>.Accounts.User
 
-  @pubsub Kurators.PubSub
+  @pubsub <%= main_module %>.PubSub
   @primary_key {:id, :binary_id, autogenerate: true}
   @schema_prefix "accounts"
   @foreign_key_type :binary_id

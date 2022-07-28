@@ -10,7 +10,11 @@ defmodule Kurators.MixProject do
       compilers: [:gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+
+      # Hex
+      description: "Kurators",
+      package: package()
     ]
   end
 
@@ -27,6 +31,12 @@ defmodule Kurators.MixProject do
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "test/support"]
   defp elixirc_paths(_), do: ["lib"]
+
+  defp package() do
+    [
+      organization: "kurators"
+    ]
+  end
 
   # Specifies your project dependencies.
   #
