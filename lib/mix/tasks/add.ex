@@ -186,7 +186,7 @@ defmodule Mix.Tasks.Kurators.Add do
   def copy_main_dir(%{main_path: main_path} = config) do
     source_dir = source_path(Path.join(["lib", "main", "kurators"]))
     {:ok, contents} = File.ls(source_dir)
-    target_dir = Path.join([main_path, "kurators"])
+    target_dir = main_path
 
     copy_main_dir(contents, source_dir, target_dir, config)
 
