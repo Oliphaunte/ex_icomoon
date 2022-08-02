@@ -4,7 +4,7 @@ defmodule Kurators.Accounts.User do
   import Ecto.Changeset
 
   alias Kurators.Repo
-  alias Kurators.Accounts.{Role, Status}
+  alias Kurators.Accounts.{Role, Status, Organization}
   alias Kurators.Auth.{Token, SignInCode}
 
   @primary_key {:id, :binary_id, autogenerate: true}
@@ -24,7 +24,7 @@ defmodule Kurators.Accounts.User do
     has_one(:sign_in_codes, SignInCode)
     belongs_to(:statuses, Status, foreign_key: :statuses_id, type: :binary_id)
     belongs_to(:roles, Role, foreign_key: :roles_id, type: :binary_id)
-    belongs_to(:accounts, Accounts, foreign_key: :accounts_id, type: :binary_id)
+    belongs_to(:organizations, Organization, foreign_key: :organizations_id, type: :binary_id)
 
     timestamps()
   end
@@ -42,7 +42,7 @@ defmodule Kurators.Accounts.User do
       :confirmed_at,
       :statuses_id,
       :roles_id,
-      :accounts_id
+      :organizations_id
     ])
     |> unique_constraint(:accounts_id)
     |> validate_email()

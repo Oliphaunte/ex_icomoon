@@ -5,14 +5,14 @@ defmodule Kurators.Repo.Migrations.CreateAccountsTables do
     execute("CREATE SCHEMA IF NOT EXISTS accounts", "")
     execute("CREATE EXTENSION IF NOT EXISTS citext", "")
 
-    create table(:accounts, prefix: "accounts", primary_key: false) do
+    create table(:organizations, prefix: "accounts", primary_key: false) do
       add(:id, :binary_id, primary_key: true)
       add(:name, :string, null: false)
 
       timestamps()
     end
 
-    create(unique_index(:accounts, [:name], prefix: "accounts"))
+    create(unique_index(:organizations, [:name], prefix: "accounts"))
 
     create table(:roles, prefix: "accounts", primary_key: false) do
       add(:id, :binary_id, primary_key: true)
@@ -51,7 +51,7 @@ defmodule Kurators.Repo.Migrations.CreateAccountsTables do
 
       add(:roles_id, references(:roles, type: :binary_id, on_delete: :delete_all), null: false)
 
-      add(:accounts_id, references(:accounts, type: :binary_id, on_delete: :delete_all),
+      add(:organizations_id, references(:organizations, type: :binary_id, on_delete: :delete_all),
         null: false
       )
 

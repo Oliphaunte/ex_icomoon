@@ -1,11 +1,16 @@
 <div class="h-screen w-full flex">
   <div class="flex flex-1 flex-col h-full">
-    <main class="flex w-full h-full">
+    <main class="flex flex-wrap w-full h-full">
       <p class="alert alert-info" role="alert" phx-click="lv:clear-flash" phx-value-key="info">
         <%= live_flash(@flash, :info) %>
       </p>
 
-      <p class="alert alert-danger" role="alert" phx-click="lv:clear-flash" phx-value-key="error">
+      <p
+        class="bg-red-100 border border-red-400 text-red-700 mx-auto px-4 py-3 rounded relative w-full max-w-screen-sm"
+        role="alert"
+        phx-click="lv:clear-flash"
+        phx-value-key="error"
+      >
         <%= live_flash(@flash, :error) %>
       </p>
 

@@ -33,7 +33,7 @@ defmodule Mix.Tasks.Kurators.Add do
     web_path = Path.join(["lib", config[:path] <> "_web"])
     main_path = Path.join(["lib", config[:path]])
     config_path = Path.join(["config", "config.exs"])
-    migration_path = Path.join(["priv", "repo", "migrations", "#{timestamp()}_add_veil.exs"])
+    migration_path = Path.join(["priv", "repo", "migrations", "#{timestamp()}_add_kurators.exs"])
     layout_path = Path.join([web_path, "templates", "layout", "app.html.eex"])
     web_router_path = Path.join([web_path, "router.ex"])
     admin_router_path = Path.join([admin_path, "router.ex"])
@@ -116,7 +116,7 @@ defmodule Mix.Tasks.Kurators.Add do
   Gives the source path to copy files from
   """
   def source_path(path) do
-    Application.app_dir(:veil, Path.join(["priv", "templates", path]))
+    Application.app_dir(:kurators, Path.join(["priv", "templates", path]))
   end
 
   @doc """
@@ -159,7 +159,56 @@ defmodule Mix.Tasks.Kurators.Add do
     # else
     #   Mix.raise("Cannot find config file at: #{config_path} or #{config_source}")
     # end
+    config
   end
+
+  @doc """
+  Copies the files in the main directory over, and evaluates against EEx using the config
+  """
+  def copy_main_dir(contents, source_dir, target_dir, config) do
+    for content <- contents do
+      if File.dir?(content) do
+        target_dir = Path.join([target_dir, content])
+        {:ok, contents} = File.ls(target_dir)
+
+        Mix.Generator.create_directory(target_dir)
+
+        copy_main_dir(contents, source_dir, target_dir, config)
+      else
+        copy_file_evaluate(content, source_dir, target_dir, config)
+      end
+    end
+  end
+
+  def copy_main_dir(%{main_path: main_path} = config) do
+    source_dir = source_path(Path.join(["lib", "main", "kurators"]))
+    {:ok, contents} = File.ls(source_dir)
+    target_dir = Path.join([main_path, "kurators"])
+
+    copy_main_dir(contents, source_dir, target_dir, config)
+
+    config
+  end
+
+  @doc """
+  Uses Mix.Generator to copy the file across, evaluating against the binding
+  """
+  def copy_file_evaluate(filename, source_dir, target_dir, config) do
+    binding = Map.to_list(config)
+    target = Path.join([target_dir, filename])
+    contents = EEx.eval_file(Path.join(source_dir, filename), binding)
+    Mix.Generator.create_file(target, contents)
+  end
+
+  @doc """
+  Create directory and copy list of files across
+  """
+
+  # def copy_files(files, source_dir, target_dir, config) do
+  #   binding = Map.to_list(config)
+  #   IO.inspect(files)
+  #   Enum.each(files, &copy_file_evaluate(&1, source_dir, target_dir, binding))
+  # end
 
   def run(_args) do
     Mix.shell().info([:cyan, "\n Adding Kurators to your project...\n"])
@@ -168,5 +217,7 @@ defmodule Mix.Tasks.Kurators.Add do
 
     config()
     |> verify_paths()
+    |> append_config_file()
+    |> copy_main_dir()
   end
 end
