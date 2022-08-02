@@ -4,6 +4,7 @@ defmodule Kurators.Inventory.Item do
   import Ecto.Changeset
 
   @primary_key {:id, :binary_id, autogenerate: true}
+  @schema_prefix "inventory"
   @foreign_key_type :binary_id
 
   schema "items" do

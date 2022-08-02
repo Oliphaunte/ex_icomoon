@@ -6,6 +6,7 @@ defmodule Kurators.Repo.Migrations.CreateAuthTables do
 
     create table(:sign_in_codes, prefix: "auth", primary_key: false) do
       add :id, :binary_id, primary_key: true
+      add :ip_address, :inet
       add :user_id, references(:users, type: :binary_id, on_delete: :delete_all, prefix: "accounts"), null: false
       add :hashed_code, :string, null: false
       add :sign_in_attempts, :integer, null: false, default: 0
@@ -15,6 +16,7 @@ defmodule Kurators.Repo.Migrations.CreateAuthTables do
 
     create table(:tokens, prefix: "auth", primary_key: false) do
       add :id, :binary_id, primary_key: true
+      add :ip_address, :inet
       add :user_id, references(:users, type: :binary_id, on_delete: :delete_all, prefix: "accounts"), null: false
       add :token, :text, null: false
       add :refresh_token, :text
