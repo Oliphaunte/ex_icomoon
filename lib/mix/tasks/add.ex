@@ -164,16 +164,19 @@ defmodule Mix.Tasks.Kurators.Add do
 
   @doc """
   Copies the files in the main directory over, and evaluates against EEx using the config
+
+  Loops through nested folders and creates that folder and copies the files
   """
   def copy_main_dir(contents, source_dir, target_dir, config) do
     for content <- contents do
-      if File.dir?(content) do
+      if File.dir?(Path.join([source_dir, content])) do
         target_dir = Path.join([target_dir, content])
-        {:ok, contents} = File.ls(target_dir)
+
+        {:ok, contents} = File.ls(Path.join([source_dir, content]))
 
         Mix.Generator.create_directory(target_dir)
 
-        copy_main_dir(contents, source_dir, target_dir, config)
+        copy_main_dir(contents, Path.join([source_dir, content]), target_dir, config)
       else
         copy_file_evaluate(content, source_dir, target_dir, config)
       end
@@ -206,7 +209,7 @@ defmodule Mix.Tasks.Kurators.Add do
 
   # def copy_files(files, source_dir, target_dir, config) do
   #   binding = Map.to_list(config)
-  #   IO.inspect(files)
+
   #   Enum.each(files, &copy_file_evaluate(&1, source_dir, target_dir, binding))
   # end
 
