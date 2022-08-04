@@ -7,7 +7,7 @@ defmodule Kurators.Repo.Migrations.CreateItems do
     create table(:items, primary_key: false) do
       add :id, :binary_id, primary_key: true
       add :name, :string
-      add :item_number, :interger
+      add :item_number, :integer
       add :item_count, :integer
       add :status, :string
 
@@ -20,6 +20,5 @@ defmodule Kurators.Repo.Migrations.CreateItems do
 
       timestamps()
     end
-  end
   end
 end

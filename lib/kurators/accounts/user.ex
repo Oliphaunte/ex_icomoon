@@ -59,12 +59,10 @@ defmodule Kurators.Accounts.User do
 
   def valid_user_actions do
     [
-      "can_make_thumbnails",
       "can_add_users",
       "can_delete_users",
       "can_add_new_fields",
       "can_modify_fields",
-      "can_view_high_res_image",
       "can_comment"
     ]
   end
@@ -97,10 +95,13 @@ defmodule Kurators.Accounts.User do
   Returns the list of users
   """
   def fetch_all do
-    __MODULE__
-    |> Repo.all(prefix: "accounts")
-    |> Repo.preload(:roles, prefix: "accounts")
-    |> Repo.preload(:statuses, prefix: "accounts")
+    users =
+      __MODULE__
+      |> Repo.all(prefix: "accounts")
+      |> Repo.preload(:roles, prefix: "accounts")
+      |> Repo.preload(:statuses, prefix: "accounts")
+
+    {:ok, users}
   end
 
   @doc """
@@ -135,7 +136,7 @@ defmodule Kurators.Accounts.User do
   @doc """
   Updates a user
   """
-  def update_user(user, attrs \\ %{}) do
+  def update(user, attrs \\ %{}) do
     user
     |> __MODULE__.changeset(attrs)
     |> Repo.update(prefix: "accounts")
@@ -144,7 +145,7 @@ defmodule Kurators.Accounts.User do
   @doc """
   Deletes a user
   """
-  def delete_user(%__MODULE__{} = user) do
+  def delete(%__MODULE__{} = user) do
     Repo.delete(user, prefix: "accounts")
   end
 end

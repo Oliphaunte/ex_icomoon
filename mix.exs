@@ -62,7 +62,9 @@ defmodule Kurators.MixProject do
       {:swoosh, "~> 1.3"},
       {:phoenix_swoosh, "~> 1.0"},
       {:finch, "~> 0.12"},
-      {:cloudex, "~> 1.4"}
+      {:cloudex, "~> 1.4"},
+      {:absinthe, "~> 1.5"},
+      {:absinthe_plug, "~> 1.5"}
     ]
   end
 

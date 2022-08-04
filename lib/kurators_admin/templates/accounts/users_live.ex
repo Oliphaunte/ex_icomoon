@@ -5,7 +5,7 @@ defmodule KuratorsAdmin.UsersLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    users = if connected?(socket), do: User.fetch_all(), else: []
+    {:ok, users} = if connected?(socket), do: User.fetch_all(), else: {:ok, []}
 
     {:ok,
      assign(socket,

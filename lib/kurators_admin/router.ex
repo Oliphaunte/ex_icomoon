@@ -46,6 +46,17 @@ defmodule KuratorsAdmin.Router do
     end
   end
 
+  scope "/api" do
+    pipe_through :api
+
+    forward "/graphiql", Absinthe.Plug.GraphiQL,
+      schema: Kurators.Schema,
+      interface: :simple,
+      context: %{pubsub: Kurators.Endpoint}
+
+    forward "/", Absinthe.Plug, schema: Kurators.Schema
+  end
+
   # scope "/", KuratorsWeb do
   #   pipe_through :browser
 
