@@ -38,3 +38,5 @@ npm-debug.log
 
 # Really should be in your ~/.gitignore (global git ignore), but in case it isn't.
 .DS_Store
+
+/priv/static/logger

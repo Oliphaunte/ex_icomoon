@@ -1,0 +1,13 @@
+<div class="flex flex-col flex-grow h-full border-r border-gray-200 bg-white overflow-y-auto">
+  <div class="sticky top-0 bg-white py-6 flex items-center flex-shrink-0 px-4 space-y-5">
+    <.link path={Routes.index_path(@socket, :index)} class="flex justify-center items-center">
+      <.icon class="mr-4" name="kurators" />
+
+      <h2 class="ml-4">Kurators</h2>
+    </.link>
+  </div>
+
+  <nav class="flex-1 bg-white" aria-label="Sidebar">
+    <.dropdown_nav_list links={@links} active_path={@active_path}/>
+  </nav>
+</div>

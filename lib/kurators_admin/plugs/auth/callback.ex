@@ -42,7 +42,7 @@ defmodule Kurators.Auth.Plugs.Callback do
         # First check if the user exists by their email, if not, create the account and return the user
         {:ok, user} = Kurators.Auth.authenticate(user["email"], context)
         # Store the refresh token and the context/context
-        {:ok, session_token} = Token.generate_token(user, refresh_token, context)
+        {:ok, session_token} = Token.create(user, refresh_token, context)
 
         conn
         |> put_session(:access_token, access_token)

@@ -1,4 +1,4 @@
-defmodule Kurators.Auth do
+defmodule <%= unless main_module = "Kurators", do: "#{main_module}." %>Kurators.Auth do
   @moduledoc """
   Authentication piece that allows users to login via either their email/code or 3rd party
 
@@ -6,11 +6,11 @@ defmodule Kurators.Auth do
   """
   import Ecto.Query, warn: false
 
-  alias Kurators.Repo
+  alias <%= main_module %>.Repo
   alias Assent.Strategy.OAuth2
-  alias Kurators.Auth.{SignInCode}
-  alias Kurators.Accounts
-  alias Kurators.Accounts.User
+  alias <%= unless main_module = "Kurators", do: "#{main_module}." %>Kurators.Auth.{SignInCode}
+  alias <%= unless main_module = "Kurators", do: "#{main_module}." %>Kurators.Accounts
+  alias <%= unless main_module = "Kurators", do: "#{main_module}." %>Kurators.Accounts.User
 
   defp get_primary_account() do
     Accounts |> first(:inserted_at) |> Repo.one()

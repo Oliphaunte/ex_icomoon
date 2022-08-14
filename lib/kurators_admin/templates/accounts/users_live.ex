@@ -1,11 +1,15 @@
 defmodule KuratorsAdmin.UsersLive do
   use KuratorsAdmin, :live_view
 
+  require Logger
+
   alias Kurators.Accounts.User
 
   @impl true
   def mount(_params, _session, socket) do
     {:ok, users} = if connected?(socket), do: User.fetch_all(), else: {:ok, []}
+
+    Logger.info("Loaded users")
 
     {:ok,
      assign(socket,

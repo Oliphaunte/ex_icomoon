@@ -14,12 +14,18 @@ defmodule Kurators.Accounts.UserTypes do
 
   object :user_queries do
     @desc "Get all the users, optionally filtering"
-    field :users, list_of(:user) do
-      resolve(&UserResolvers.fetch_all/3)
+    field :fetch_all, list_of(:user) do
+      resolve(&UserResolvers.fetch_all/1)
     end
 
-    @desc "Get a user using criteria"
-    field :user, :user do
+    @desc "Get user by id"
+    field :get_user_by_id, :user do
+      resolve(&UserResolvers.get_user_by_id/1)
+    end
+
+    @desc "Get user by email"
+    field :get_user_by_email, :user do
+      resolve(&UserResolvers.get_user_by_id/1)
     end
   end
 end

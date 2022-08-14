@@ -5,12 +5,12 @@ defmodule KuratorsAdmin.Router do
   alias Kurators.Auth.Plugs.{Role, Session, Callback}
 
   pipeline :browser do
-    plug :accepts, ["html"]
-    plug :fetch_session
-    plug :fetch_live_flash
-    plug :put_root_layout, {KuratorsAdmin.LayoutView, :root}
-    plug :protect_from_forgery
-    plug :put_secure_browser_headers
+    plug(:accepts, ["html"])
+    plug(:fetch_session)
+    plug(:fetch_live_flash)
+    plug(:put_root_layout, {KuratorsAdmin.LayoutView, :root})
+    plug(:protect_from_forgery)
+    plug(:put_secure_browser_headers)
   end
 
   pipeline :callback do
@@ -23,17 +23,17 @@ defmodule KuratorsAdmin.Router do
   end
 
   pipeline :api do
-    plug :accepts, ["json"]
+    plug(:accepts, ["json"])
   end
 
   scope "/", KuratorsAdmin do
-    pipe_through [:browser, :callback]
+    pipe_through([:browser, :callback])
 
     live("/auth/google", AuthLive, :index)
   end
 
   scope "/", KuratorsAdmin do
-    pipe_through [:browser, :session]
+    pipe_through([:browser, :session])
 
     live("/auth", AuthLive, :index)
 
@@ -43,18 +43,23 @@ defmodule KuratorsAdmin.Router do
       live("/users", UsersLive, :index)
       live("/user/:id", UserLive, :index)
       live("/settings/auth", WebAuthLive, :index)
+
+      # live("/inventory", InventoryLive, :index)
+      # live("/inventory/new", InventoryLive.New, :new)
+      # live("/inventory/:item", InventoryLive.Show, :show)
     end
   end
 
   scope "/api" do
-    pipe_through :api
+    pipe_through(:api)
 
-    forward "/graphiql", Absinthe.Plug.GraphiQL,
+    forward("/graphiql", Absinthe.Plug.GraphiQL,
       schema: Kurators.Schema,
       interface: :simple,
       context: %{pubsub: Kurators.Endpoint}
+    )
 
-    forward "/", Absinthe.Plug, schema: Kurators.Schema
+    forward("/", Absinthe.Plug, schema: Kurators.Schema)
   end
 
   # scope "/", KuratorsWeb do
@@ -79,9 +84,9 @@ defmodule KuratorsAdmin.Router do
     import Phoenix.LiveDashboard.Router
 
     scope "/" do
-      pipe_through :browser
+      pipe_through(:browser)
 
-      live_dashboard "/dashboard", metrics: KuratorsAdmin.Telemetry
+      live_dashboard("/dashboard", metrics: KuratorsAdmin.Telemetry)
     end
   end
 
@@ -91,9 +96,9 @@ defmodule KuratorsAdmin.Router do
   # node running the Phoenix server.
   if Mix.env() == :dev do
     scope "/dev" do
-      pipe_through :browser
+      pipe_through(:browser)
 
-      forward "/mailbox", Plug.Swoosh.MailboxPreview
+      forward("/mailbox", Plug.Swoosh.MailboxPreview)
     end
   end
 end

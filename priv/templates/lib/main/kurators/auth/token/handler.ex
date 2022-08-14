@@ -1,7 +1,7 @@
-defmodule Kurators.Auth.TokenHandler do
+defmodule <%= unless main_module = "Kurators", do: "#{main_module}." %>Kurators.Auth.TokenHandler do
   use GenServer
 
-  alias Kurators.Auth.{Token}
+  alias <%= unless main_module = "Kurators", do: "#{main_module}." %>Kurators.Auth.{Token}
 
   def start_link(opts \\ []) do
     GenServer.start_link(

@@ -95,9 +95,9 @@ defmodule KuratorsAdmin do
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View
 
-      import KuratorsAdmin.ErrorHelpers
+      import KuratorsAdmin.Helpers
       import KuratorsAdmin.Gettext
-      import Kurators.LiveHelpers
+
       alias KuratorsAdmin.Router.Helpers, as: Routes
       alias Phoenix.LiveView.JS
     end

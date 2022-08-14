@@ -56,9 +56,21 @@ config :tailwind,
   ]
 
 # Configures Elixir's Logger
+config :logger,
+  backends: [
+    :console,
+    {Kurators.LoggerBackend, :log_backend}
+  ],
+  level: :debug,
+  compile_time_purge_matching: [
+    [level_lower_than: :info]
+  ]
+
 config :logger, :console,
-  format: "$time $metadata[$level] $message\n",
+  format: {Kurators.LogFormatter, :format},
   metadata: [:request_id]
+
+config :logger, :log_backend, level: :info
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason

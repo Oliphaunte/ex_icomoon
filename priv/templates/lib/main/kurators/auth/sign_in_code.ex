@@ -1,11 +1,11 @@
-defmodule Kurators.Auth.SignInCode do
+defmodule <%= unless main_module = "Kurators", do: "#{main_module}." %>Kurators.Auth.SignInCode do
   use Ecto.Schema
 
   import Ecto.Changeset
   import Ecto.Query, warn: false
 
-  alias Kurators.{Repo, Mailer}
-  alias Kurators.Accounts.User
+  alias <%= main_module %>.Kurators.{Repo, Mailer}
+  alias <%= unless main_module = "Kurators", do: "#{main_module}." %>Kurators.Accounts.User
 
   @sign_in_code_length 6
   @sign_in_code_regex Regex.compile!("^\\d{" <> Integer.to_string(@sign_in_code_length) <> "}$")

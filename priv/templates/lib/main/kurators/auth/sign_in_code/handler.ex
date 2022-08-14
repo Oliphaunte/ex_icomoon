@@ -1,4 +1,4 @@
-defmodule Kurators.Auth.SignInCodeHandler do
+defmodule <%= unless main_module = "Kurators", do: "#{main_module}." %>Kurators.Auth.SignInCodeHandler do
   use GenServer
 
   def start_link(opts \\ []) do

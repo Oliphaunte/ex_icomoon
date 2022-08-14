@@ -1,4 +1,4 @@
-defmodule Kurators.Auth.Token do
+defmodule <%= unless main_module = "Kurators", do: "#{main_module}." %>Kurators.Auth.Token do
   use Ecto.Schema
 
   require Logger
@@ -6,8 +6,8 @@ defmodule Kurators.Auth.Token do
   import Ecto.Changeset
   import Ecto.Query, warn: false
 
-  alias Kurators.{Crypto, Repo}
-  alias Kurators.Accounts.User
+  alias <%= main_module %>.Kurators.{Crypto, Repo}
+  alias <%= unless main_module = "Kurators", do: "#{main_module}." %>Kurators.Accounts.User
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @schema_prefix "auth"

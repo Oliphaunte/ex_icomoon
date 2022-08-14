@@ -70,6 +70,9 @@
             <%= text_input(f, :code,
               class: "w-full",
               maxlength: "6",
+              inputmode: "numeric",
+              pattern: "[0-9]*",
+              autocomplete: "one-time-code",
               placeholder: "000000",
               autofocus: true
             ) %>

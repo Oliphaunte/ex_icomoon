@@ -64,8 +64,8 @@ defmodule Kurators.Auth.Plugs.Session do
       _ ->
         unless(String.match?(conn.request_path, ~r/\/auth/)) do
           conn
-          |> put_flash(:error, "Please sign in")
           |> redirect(to: "/auth")
+          |> put_flash(:error, "Please sign in")
           |> halt()
         else
           conn

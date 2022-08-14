@@ -1,7 +1,5 @@
-defmodule KuratorsAdmin.IndexLive do
+defmodule KuratorsAdmin.InventoryLive do
   use KuratorsAdmin, :live_view
-
-  require Logger
 
   @impl true
   def mount(_params, _session, socket) do
