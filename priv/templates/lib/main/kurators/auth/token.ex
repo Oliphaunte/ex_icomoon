@@ -6,7 +6,7 @@ defmodule <%= unless main_module = "Kurators", do: "#{main_module}." %>Kurators.
   import Ecto.Changeset
   import Ecto.Query, warn: false
 
-  alias <%= main_module %>.Kurators.{Crypto, Repo}
+  alias <%= main_module %>.{Crypto, Repo}
   alias <%= unless main_module = "Kurators", do: "#{main_module}." %>Kurators.Accounts.User
 
   @primary_key {:id, :binary_id, autogenerate: true}

@@ -1,8 +1,8 @@
 defmodule <%= unless main_module = "Kurators", do: "#{main_module}." %>Kurators.Accounts.AuthTypes do
   use Absinthe.Schema.Notation
 
-  alias Kurators.Accounts.AuthResolvers
-  alias Kurators.Accounts.UserTypes
+  alias <%= unless main_module = "Kurators", do: "#{main_module}." %>Kurators.Accounts.AuthResolvers
+  alias <%= unless main_module = "Kurators", do: "#{main_module}." %>Kurators.Accounts.UserTypes
 
   object :auth_queries do
     @desc "Authenticate the user via an email"

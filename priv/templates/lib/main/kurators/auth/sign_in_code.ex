@@ -4,7 +4,7 @@ defmodule <%= unless main_module = "Kurators", do: "#{main_module}." %>Kurators.
   import Ecto.Changeset
   import Ecto.Query, warn: false
 
-  alias <%= main_module %>.Kurators.{Repo, Mailer}
+  alias <%= main_module %>.{Repo, Mailer}
   alias <%= unless main_module = "Kurators", do: "#{main_module}." %>Kurators.Accounts.User
 
   @sign_in_code_length 6
