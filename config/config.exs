@@ -59,7 +59,7 @@ config :tailwind,
 config :logger,
   backends: [
     :console,
-    {Kurators.LoggerBackend, :log_backend}
+    {Kurators.Logger, :log_backend}
   ],
   level: :debug,
   compile_time_purge_matching: [

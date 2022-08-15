@@ -6,9 +6,6 @@ defmodule Kurators.Accounts do
   """
   use Ecto.Schema
 
-  import Ecto.Changeset
-
-  alias Kurators.Repo
   alias Kurators.Accounts.User
 
   @pubsub Kurators.PubSub

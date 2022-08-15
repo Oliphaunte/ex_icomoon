@@ -6,6 +6,8 @@ defmodule Kurators.Auth do
   """
   import Ecto.Query, warn: false
 
+  require Logger
+
   alias Kurators.Repo
   alias Assent.Strategy.OAuth2
   alias Kurators.Auth.{SignInCode}
