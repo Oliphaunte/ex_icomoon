@@ -2,6 +2,8 @@
 
 **TODO: Add description**
 
+A simple helper to allow you to use icomoon on your projects
+
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
@@ -15,7 +17,21 @@ def deps do
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/ex_icomoon>.
+## Usage
+
+1. You will need to make sure you copy & paste your cdn url for your icomoon set(s), in `root.html.heex`
+2. Import the Helper into your web entrypoint:
+```
+  defp view_helpers do
+    quote do
+      ...
+
+      import ExIcomoon
+    end
+  end
+```
+3. You can now call the <.icon> helper anywhere in your heex files. 
+```
+<.icon name="your_icon">
+```
 

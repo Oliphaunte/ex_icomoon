@@ -9,7 +9,14 @@ defmodule ExIcomoon.MixProject do
       start_permanent: Mix.env() == :prod,
       description: description(),
       package: package(),
-      deps: deps()
+      deps: deps(),
+      name: "ExIcomoon",
+      source_url: "https://github.com/Oliphaunte/ex_icomoon",
+      docs: [
+        # The main page in the docs
+        main: "ExIcomoon",
+        extras: ["README.md"]
+      ]
     ]
   end
 
