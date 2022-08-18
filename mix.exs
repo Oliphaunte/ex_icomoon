@@ -8,6 +8,7 @@ defmodule ExIcomoon.MixProject do
       elixir: "~> 1.13",
       start_permanent: Mix.env() == :prod,
       description: description(),
+      package: package(),
       deps: deps()
     ]
   end
@@ -21,6 +22,14 @@ defmodule ExIcomoon.MixProject do
 
   defp description() do
     "This package provides a liveview icon implementation that you can use with icomoon"
+  end
+
+  defp package do
+    %{
+      files: ~w(lib .formatter.exs mix.exs README* LICENSE*),
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/Oliphaunte/ex_icomoon"}
+    }
   end
 
   # Run "mix help deps" to learn about dependencies.
